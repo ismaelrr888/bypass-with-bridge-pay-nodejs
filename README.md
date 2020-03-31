@@ -4,7 +4,7 @@ For running the app: npm run server
 
 For testing url bridge pay http://localhost:5000/api/bp/actions.
 
-example endpoint
+example payload post
 {	
 	"ClientIdentifier": "SOAP",
 	"TransactionID": "123",
