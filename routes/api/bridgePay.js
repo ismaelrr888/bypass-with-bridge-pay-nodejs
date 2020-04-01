@@ -5,7 +5,16 @@ const jsonxml = require('jsontoxml');
 const base64 = require('base-64');
 const xml2js = require('xml2js');
 
+const moment = require('moment');
+const xmlParser = require('xml2json');
+
 var parser = new xml2js.Parser();
+
+const QUERY_URL = 'https://www.bridgepaynetsecuretest.com/PaymentService/Default.aspx';
+const USER = 'zte089test';
+const PASS = '57!sE@3Fm';
+const MERCHANT_CODE = '12122000';
+const MERCHANT_ACCOUNT_CODE = '12122001';
 
 const instance = axios.create({
     baseURL: "https://www.bridgepaynetsecuretest.com/PaymentService/RequestHandler.svc",
@@ -16,6 +25,7 @@ const instance = axios.create({
 })
 
 router.post("/actions", (req, res) => {
+    // return res.json(req.body);
     const toFormatJson = {
         requestHeader:{
             ...req.body
@@ -44,7 +54,16 @@ router.post("/actions", (req, res) => {
             });
         }    
     ).catch(err=>res.json(err));
-}); 
+});
+
+router.post("/query-string", async (req, res)=>{
+    try{
+        const respData = await axios.post(QUERY_URL, null, {params: req.body});
+
+        return res.json(xmlParser.toJson(respData.data));
+    }catch(err){
+        return res.json(err);
+    }
+});
 
 module.exports = router;
-
